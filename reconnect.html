@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeConnect</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sofia+Sans+Condensed:wght@400;700&family=Orbitron:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Sofia Sans Condensed', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #141519; /* Dark background remains the same */
+            color: white;
+            overflow: hidden;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 64px;
+            margin-bottom: 40px;
+            text-align: center;
+            color: #5F6FAF; /* Cold blue-violet color */
+            opacity: 0;
+            animation: slideIn 1s ease-out forwards;
+        }
+
+        @keyframes slideIn {
+            0% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .input-container {
+            margin-bottom: 20px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: zoomIn 1s ease-out forwards;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            width: 80%;
+            max-width: 400px;
+            border: 1px solid #5F6FAF; /* Cold blue-violet border */
+            border-radius: 20px;
+            outline: none;
+            box-shadow: 0 0 20px rgba(95, 111, 175, 0.6);
+            background-color: transparent;
+            color: white;
+            transition: border 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            border: 2px solid #5F6FAF; /* Focus with blue-violet */
+            box-shadow: 0 0 30px rgba(95, 111, 175, 1);
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-left: 10px;
+            cursor: pointer;
+            border: 2px solid #5F6FAF; /* Cold blue-violet border */
+            border-radius: 20px;
+            background-color: transparent;
+            color: white;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+            position: relative;
+        }
+
+        button:hover {
+            background-color: #5F6FAF; /* Hover with blue-violet */
+            color: #141519;
+            transform: translateY(-5px);
+        }
+
+        button:before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: #5F6FAF;
+            opacity: 0.2;
+            border-radius: 20px;
+            transform: scale(0);
+            transition: transform 0.4s ease;
+        }
+
+        button:hover:before {
+            transform: scale(1);
+        }
+
+        .buttons-container {
+            margin-top: 40px;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .content {
+            display: none;
+            font-size: 144px;
+            font-weight: bold;
+            text-align: center;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            max-width: 90%;
+            opacity: 0;
+            animation: contentFadeIn 1s ease-out forwards;
+        }
+
+        @keyframes contentFadeIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .back-button {
+            display: none;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: 2px solid #5F6FAF; /* Cold blue-violet border */
+            border-radius: 20px;
+            background-color: transparent;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            position: relative;
+        }
+
+        .back-button:hover {
+            background-color: #5F6FAF; /* Hover with blue-violet */
+            color: #141519;
+            transform: translateY(-5px);
+        }
+
+        .back-button:before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: #5F6FAF;
+            opacity: 0.2;
+            border-radius: 20px;
+            transform: scale(0);
+            transition: transform 0.4s ease;
+        }
+
+        .back-button:hover:before {
+            transform: scale(1);
+        }
+
+        .language-selector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            opacity: 0;
+            animation: fadeIn 1.5s ease-out forwards;
+        }
+
+        .language-selector button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            color: white;
+            font-size: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .language-selector button:hover {
+            transform: scale(1.1);
+        }
+
+        /* Gradient frame below language selector */
+        .gradient-frame {
+    position: absolute;
+    top: 100px; /* Réduit l'espacement en haut (diminue la hauteur du cadre en haut) */
+    left: 10%; /* Augmente l'espace à gauche en définissant la largeur à 10% du côté gauche */
+    right: 10%; /* Augmente l'espace à droite en définissant la largeur à 10% du côté droit */
+    width: 80%; /* Réduit la largeur du cadre à 80% de la largeur de la page */
+    height: calc(90vh - 100px); /* Augmente la hauteur à 90% de la hauteur de la fenêtre */
+    border: 2px solid #5F6FAF; /* Ajout de la bordure pour le cadre */
+    border-radius: 20px; /* Coins arrondis */
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
+    pointer-events: none;
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="language-selector">
+        <button onclick="changeLanguage('fr')">Français</button>
+        <button onclick="changeLanguage('en')">English</button>
+        <button onclick="changeLanguage('cn')">中文</button>
+    </div>
+
+    <!-- Gradient frame added here -->
+    <div class="gradient-frame"></div>
+
+    <div class="title">Choose your topic</div>
+
+    <div class="input-container">
+        <input type="text" id="textInput" placeholder="Write something...">
+        <button onclick="addButton()" id="validateButton">Validate</button>
+    </div>
+
+    <div class="buttons-container" id="buttonsContainer"></div>
+    <div class="content" id="contentDisplay"></div>
+    <button class="back-button" id="backButton" onclick="goBack()">Back</button>
+
+    <script>
+        let currentLanguage = 'en';  // Default language: English
+
+        const translations = {
+            'fr': {
+                title: "Choisi ton sujet",
+                placeholder: "Écrivez quelque chose...",
+                validateButtonText: "Valider",
+                backButton: "Retour"
+            },
+            'en': {
+                title: "Choose your topic",
+                placeholder: "Write something...",
+                validateButtonText: "Validate",
+                backButton: "Back"
+            },
+            'cn': {
+                title: "选择你的话题",
+                placeholder: "写点什么...",
+                validateButtonText: "确认",
+                backButton: "返回"
+            }
+        };
+
+        function changeLanguage(language) {
+            currentLanguage = language;
+            const translationsForCurrentLanguage = translations[language];
+
+            // Update page text based on selected language
+            document.querySelector('.title').textContent = translationsForCurrentLanguage.title;
+            document.getElementById('textInput').placeholder = translationsForCurrentLanguage.placeholder;
+            document.getElementById('validateButton').textContent = translationsForCurrentLanguage.validateButtonText;
+            document.getElementById('backButton').textContent = translationsForCurrentLanguage.backButton;
+        }
+
+        function addButton() {
+            const input = document.getElementById('textInput');
+            const text = input.value.trim();
+
+            if (text !== '') {
+                const button = document.createElement('button');
+                button.textContent = text;
+                button.onclick = () => displayContent(text);
+                document.getElementById('buttonsContainer').appendChild(button);
+                input.value = ''; // Clear input field
+            }
+        }
+
+        function displayContent(text) {
+            document.querySelector('.title').style.display = 'none';
+            document.querySelector('.input-container').style.display = 'none';
+            document.getElementById('buttonsContainer').style.display = 'none';
+
+            const content = document.getElementById('contentDisplay');
+            content.textContent = text;
+            content.style.display = 'block';
+
+            const backButton = document.getElementById('backButton');
+            backButton.style.display = 'block';
+        }
+
+        function goBack() {
+            document.querySelector('.title').style.display = 'block';
+            document.querySelector('.input-container').style.display = 'flex';
+            document.getElementById('buttonsContainer').style.display = 'block';
+
+            const content = document.getElementById('contentDisplay');
+            content.style.display = 'none';
+
+            const backButton = document.getElementById('backButton');
+            backButton.style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
